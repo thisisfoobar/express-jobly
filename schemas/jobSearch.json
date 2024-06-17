@@ -1,0 +1,25 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "required": [],
+    "properties": {
+        "title": {
+            "type": "string",
+            "minLength": 1
+        },
+        "hasEquity": {
+            "type": "boolean"
+        },
+        "minSalary": {
+            "type": "integer",
+            "minimum": 0
+        }
+    },
+    "examples": [{
+        "title": "test",
+        "hasEquity": true,
+        "minSalary": 300
+    }],
+    "additionalProperties": false
+}

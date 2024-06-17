@@ -8,6 +8,7 @@ const {
   commonBeforeEach,
   commonAfterEach,
   commonAfterAll,
+  testJobIds
 } = require("./_testCommon");
 
 beforeAll(commonBeforeAll);
@@ -87,6 +88,43 @@ describe("findAll", function () {
   });
 });
 
+/************************************** filterAll */
+
+describe("filterAll", function () {
+  test("works: with filter, like name", async function () {
+    let companies = await Company.filterAll({nameLike: "c2"});
+    expect(companies).toEqual([
+      {
+        handle: "c2",
+        name: "C2",
+        description: "Desc2",
+        numEmployees: 2,
+        logoUrl: "http://c2.img",
+      },
+    ]);
+  });
+  test("works: with filter, employee counts", async function () {
+    let companies = await Company.filterAll({minEmployees: 2, maxEmployees: 4});
+    expect(companies).toEqual([
+      {
+        handle: "c2",
+        name: "C2",
+        description: "Desc2",
+        numEmployees: 2,
+        logoUrl: "http://c2.img",
+      },
+      {
+        handle: "c3",
+        name: "C3",
+        description: "Desc3",
+        numEmployees: 3,
+        logoUrl: "http://c3.img",
+      },
+    ]);
+  });
+});
+
+
 /************************************** get */
 
 describe("get", function () {
@@ -98,6 +136,20 @@ describe("get", function () {
       description: "Desc1",
       numEmployees: 1,
       logoUrl: "http://c1.img",
+      jobs: [
+        {
+          id: testJobIds[0],
+          title: "J1",
+          salary: 1000,
+          equity: "0.15"
+        },
+        {
+          id: testJobIds[1],
+          title: "J2",
+          salary: 2000,
+          equity: "0.1"
+        }
+      ]
     });
   });
 
