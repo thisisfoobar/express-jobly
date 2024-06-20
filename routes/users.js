@@ -43,12 +43,29 @@ router.post("/", ensureAdmin, async function (req, res, next) {
   }
 });
 
+/** POST /:username/jobs/:id
+ * 
+ * Returns { applied: jobId }
+ * 
+ * Athorization: admin or logged in user
+ */
+
+router.post("/:username/jobs/:id", ensureCorrectUserOrAdmin, async function(req, res, next) {
+  try {
+    const jobId = +req.params.id;
+    await User.apply(req.params.username, jobId)
+    return res.json({ applied: jobId })
+  } catch (err) {
+    return next(err)
+  }
+})
+
 
 /** GET / => { users: [ {username, firstName, lastName, email }, ... ] }
  *
  * Returns list of all users.
  *
- * Authorization required: login
+ * Authorization required: admin
  **/
 
 router.get("/", ensureAdmin, async function (req, res, next) {
@@ -65,7 +82,7 @@ router.get("/", ensureAdmin, async function (req, res, next) {
  *
  * Returns { username, firstName, lastName, isAdmin }
  *
- * Authorization required: login
+ * Authorization required: admin or same as username
  **/
 
 router.get("/:username", ensureCorrectUserOrAdmin, async function (req, res, next) {
@@ -85,7 +102,7 @@ router.get("/:username", ensureCorrectUserOrAdmin, async function (req, res, nex
  *
  * Returns { username, firstName, lastName, email, isAdmin }
  *
- * Authorization required: login
+ * Authorization required: admin or same username
  **/
 
 router.patch("/:username", ensureCorrectUserOrAdmin, async function (req, res, next) {
@@ -106,7 +123,7 @@ router.patch("/:username", ensureCorrectUserOrAdmin, async function (req, res, n
 
 /** DELETE /[username]  =>  { deleted: username }
  *
- * Authorization required: login
+ * Authorization required: admin or same username
  **/
 
 router.delete("/:username", ensureCorrectUserOrAdmin, async function (req, res, next) {

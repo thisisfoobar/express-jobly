@@ -54,7 +54,7 @@ router.get("/", async function (req, res, next) {
   query.hasEquity = query.hasEquity === "true";
 
   try {
-    const validator = jsonshema.validate(query, jobSearchSchema);
+    const validator = jsonschema.validate(query, jobSearchSchema);
     if (!validator.valid) {
       const errs = validator.errors.map((e) => e.stack);
       throw new BadRequestError(errs);
